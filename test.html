@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <main></main>
+
+    <template>
+      <article>
+        <img src="" alt="" class="billede" />
+        <h2 class="fornavn"></h2>
+        <p class="efternavn"></p>
+        <p class="email"></p>
+      </article>
+    </template>
+
+    <script>
+      const url = "https://personliste-b217.restdb.io/rest/medlemmer?";
+
+      const options = {
+        headers: {
+          "x-apikey": "61fcf7e53f215f310a37be5e",
+        },
+      };
+
+      async function hentData() {
+        const resspons = await fetch(url, options);
+        const json = await resspons.json();
+        vis(json);
+      }
+
+      const main = document.querySelector("main");
+      const template = document.querySelector("template");
+
+      function vis(personliste) {
+        console.log(personliste);
+        personliste.forEach((person) => {
+          const klon = template.cloneNode(true).content;
+          klon.querySelector(".billede").src = person.profilbillede;
+          klon.querySelector(".fornavn").textContent = person.fornavn;
+          klon.querySelector(".efternavn").textContent = person.efternavn;
+          klon.querySelector(".email").textContent = person.email;
+          main.appendChild(klon);
+        });
+      }
+
+      hentData();
+    </script>
+  </body>
+</html>
